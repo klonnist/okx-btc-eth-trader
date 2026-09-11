@@ -47,6 +47,24 @@ python cli.py backtest --symbol BTC-USDT-SWAP --entry-timeframe 4H \
 Sonuclar konsola ozet olarak basilir; ayrintili islem gunlugu ve equity
 egrisi `output/` klasorune CSV olarak kaydedilir.
 
+## Canli panel (GitHub Pages)
+
+`docs/` klasorunde, GitHub Actions ile guncellenen sanal hesaplari gosteren
+statik bir dashboard bulunur: **https://klonnist.github.io/okx-btc-eth-trader/**
+
+- `.github/workflows/run-bot.yml`: her 15 dakikada bir 3 profili (15m/4H/1D)
+  tarar, her biri kendi ayri sanal 10.000 USDT hesabini `docs/data/<profil>/state.json`
+  dosyasina yazar (kaldirac: 15m=10x, 4H=5x, 1D=3x).
+- `.github/workflows/backtest.yml`: GitHub Actions sekmesinden manuel
+  tetiklenir (sembol/zaman dilimi/tarih araligi secilir), sonucu
+  `docs/data/backtests/` altina yayinlar; panelin "Backtest" sekmesinde
+  gecmis tum calistirmalar listelenir (equity egrisi + islem listesi dahil).
+- `runner.py --profile 15m --timeframe 15m --leverage 10`: tek bir taramayi
+  elle calistirmak icin (workflow'un yaptigi seyin aynisi).
+
+Bu panel de gercek para/emir icermez; her sey ayni sanal simulasyon
+mantigini kullanir.
+
 ## Onemli notlar / kisitlar
 
 - Fiyat verisi OKX'in genel API'sinden gelir; API anahtari gerekmez, gercek

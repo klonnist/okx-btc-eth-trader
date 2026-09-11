@@ -8,8 +8,10 @@ This is an educational technical-analysis / simulation tool. Nothing here places
 real orders -- it only reads public OKX market data and simulates outcomes.
 """
 import argparse
+import json
 import os
 import sys
+import uuid
 from datetime import datetime, timedelta, timezone
 
 import pandas as pd
@@ -19,6 +21,7 @@ from okx_trader.backtest import BacktestConfig, prepare_signal_frame, run_backte
 
 SYMBOLS = ["BTC-USDT-SWAP", "ETH-USDT-SWAP"]
 ENTRY_TIMEFRAMES = ["15m", "4H", "1D"]
+BACKTESTS_DIR = os.path.join(os.path.dirname(__file__), "docs", "data", "backtests")
 
 BAR_TIMEDELTA = {
     "1m": timedelta(minutes=1), "3m": timedelta(minutes=3), "5m": timedelta(minutes=5),
@@ -105,6 +108,66 @@ def cmd_backtest(args):
     print(f"\n  Islem gunlugu -> {trades_path}")
     print(f"  Equity egrisi  -> {equity_path}")
 
+    if args.publish:
+        path = publish_backtest_result(args, start, end, config, result)
+        print(f"  Panele yayinlandi -> {path}")
+
+
+def publish_backtest_result(args, start, end, config: BacktestConfig, result: dict) -> str:
+    """Writes a dashboard-friendly JSON under docs/data/backtests/ and updates the index."""
+    os.makedirs(BACKTESTS_DIR, exist_ok=True)
+    run_id = f"{int(datetime.now(timezone.utc).timestamp())}-{uuid.uuid4().hex[:6]}"
+    summary = result["summary"]
+
+    equity_curve = [
+        {"timestamp": str(row["timestamp"]), "equity": round(float(row["equity"]), 2)}
+        for row in result["equity_curve"].to_dict(orient="records")
+    ]
+    trades = result["trades"].to_dict(orient="records") if not result["trades"].empty else []
+    for t in trades:
+        for k in ("entry_time", "exit_time"):
+            if k in t:
+                t[k] = str(t[k])
+
+    detail = {
+        "id": run_id,
+        "run_at": datetime.now(timezone.utc).isoformat(),
+        "symbol": args.symbol,
+        "entry_timeframe": args.entry_timeframe,
+        "trend_timeframe": args.trend_timeframe,
+        "start": str(start.date()),
+        "end": str(end.date()),
+        "config": {
+            "starting_balance": config.starting_balance,
+            "margin_per_trade": config.margin_per_trade,
+            "leverage": config.leverage,
+        },
+        "summary": summary,
+        "equity_curve": equity_curve,
+        "trades": trades,
+    }
+    with open(os.path.join(BACKTESTS_DIR, f"{run_id}.json"), "w", encoding="utf-8") as f:
+        json.dump(detail, f, indent=2)
+
+    index_path = os.path.join(BACKTESTS_DIR, "index.json")
+    index = []
+    if os.path.exists(index_path):
+        with open(index_path, "r", encoding="utf-8") as f:
+            index = json.load(f)
+    index.append({
+        "id": run_id,
+        "run_at": detail["run_at"],
+        "symbol": args.symbol,
+        "timeframe": args.entry_timeframe,
+        "start": detail["start"],
+        "end": detail["end"],
+        "total_return_pct": summary["total_return_pct"],
+        "total_trades": summary["total_trades"],
+    })
+    with open(index_path, "w", encoding="utf-8") as f:
+        json.dump(index, f, indent=2)
+    return os.path.join(BACKTESTS_DIR, f"{run_id}.json")
+
 
 def build_parser():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -128,6 +191,7 @@ def build_parser():
     p_bt.add_argument("--balance", type=float, default=10_000.0)
     p_bt.add_argument("--margin", type=float, default=500.0)
     p_bt.add_argument("--leverage", type=float, default=5.0)
+    p_bt.add_argument("--publish", action="store_true", help="Sonucu docs/data/backtests altina yayinla (panelde gorunur)")
     p_bt.set_defaults(func=cmd_backtest)
 
     return parser

@@ -1,0 +1,18 @@
+{
+  "profile": "4h",
+  "leverage": 5.0,
+  "margin_per_trade": 500.0,
+  "starting_balance": 10000.0,
+  "balance": 10000.0,
+  "open_positions": {},
+  "closed_trades": [],
+  "stats": {
+    "total_trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "win_rate_pct": 0.0,
+    "total_pnl": 0.0,
+    "unrealized_pnl": 0
+  },
+  "last_updated": "2026-09-11T05:45:09.179220+00:00"
+}

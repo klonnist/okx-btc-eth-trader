@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OKX BTC/ETH Bot — Sanal Hesap Paneli</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <h1>OKX BTC/ETH Sinyal Botu — Sanal Hesap Paneli</h1>
+  <p class="subtitle">
+    Veriler GitHub Actions tarafından her 15 dakikada bir güncellenir ·
+    repo <a href="https://github.com/klonnist/okx-btc-eth-trader" target="_blank">klonnist/okx-btc-eth-trader</a> ·
+    her profil (15m / 4H / 1D) kendi ayrı sanal 10.000 USDT hesabıyla çalışır
+  </p>
+  <p class="updated" id="updated">Son güncelleme: —</p>
+
+  <div class="tabs" id="tabs">
+    <button class="tab-btn" data-tab="15m">15 Dakika · Scalp</button>
+    <button class="tab-btn" data-tab="4h">4 Saat · Swing</button>
+    <button class="tab-btn" data-tab="1d">1 Gün · Pozisyon</button>
+    <button class="tab-btn" data-tab="backtest">📊 Backtest</button>
+  </div>
+
+  <div id="account-view">
+    <div class="cards" id="cards"></div>
+    <div class="panel">
+      <h2>Açık Pozisyonlar</h2>
+      <div id="positions-wrap"></div>
+    </div>
+    <div class="panel" style="margin-top:14px;">
+      <h2>Son İşlemler</h2>
+      <div id="trades-wrap"></div>
+    </div>
+  </div>
+
+  <div id="backtest-view" style="display:none;"></div>
+
+  <p class="disclaimer">
+    ⚠️ Bu bot gerçek para kullanmaz, hiçbir gerçek emir göndermez. Tamamen sanal bir hesap üzerinde
+    simülasyon yapar; gösterilen kâr/zarar gerçek değildir. Yatırım tavsiyesi değildir — teknik analiz
+    kurallarına dayalı otomatik bir simülasyondur, kesin sonuç garantisi vermez.
+  </p>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
