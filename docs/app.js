@@ -140,13 +140,9 @@ function sparklineSvg(points) {
   </svg>`;
 }
 
-async function loadBacktestDetail(id) {
-  const view = document.getElementById("backtest-view");
-  view.innerHTML = `<div class="panel"><div class="empty">Yükleniyor…</div></div>`;
-  const detail = await fetchJson(`data/backtests/${id}.json`);
+function renderDetailHtml(detail) {
   const s = detail.summary;
-  view.innerHTML = `
-    <button class="tab-btn" id="back-to-list" style="margin-bottom:14px;">← Listeye dön</button>
+  return `
     <div class="cards">
       <div class="card"><div class="label">Sembol</div><div class="value">${detail.symbol}</div></div>
       <div class="card"><div class="label">Zaman Dilimi</div><div class="value">${detail.entry_timeframe}</div></div>
@@ -175,19 +171,28 @@ async function loadBacktestDetail(id) {
         </table>` : `<div class="empty">Bu aralıkta işlem açılmadı.</div>`}
       </div>
     </div>`;
-  document.getElementById("back-to-list").addEventListener("click", loadBacktest);
 }
 
-async function loadBacktest() {
-  document.getElementById("account-view").style.display = "none";
-  const view = document.getElementById("backtest-view");
-  view.style.display = "";
-  view.innerHTML = `<div class="panel"><div class="empty">Yükleniyor…</div></div>`;
+async function loadBacktestDetail(id) {
+  const result = document.getElementById("bt-result");
+  result.innerHTML = `<div class="panel"><div class="empty">Yükleniyor…</div></div>`;
+  result.scrollIntoView({ behavior: "smooth", block: "start" });
+  try {
+    const detail = await fetchJson(`data/backtests/${id}.json`);
+    result.innerHTML = renderDetailHtml(detail);
+  } catch (e) {
+    result.innerHTML = `<div class="error-box">Sonuç yüklenemedi: ${e.message}</div>`;
+  }
+}
+
+async function loadBacktestHistory() {
+  const wrap = document.getElementById("bt-history");
+  wrap.innerHTML = `<div class="panel"><div class="empty">Yükleniyor…</div></div>`;
   try {
     const index = await fetchJson("data/backtests/index.json");
     if (!index.length) throw new Error("empty");
-    view.innerHTML = `<div class="panel">
-      <h2>Geçmiş Backtest Çalıştırmaları</h2>
+    wrap.innerHTML = `<div class="panel">
+      <h2>Geçmiş Backtest Çalıştırmaları (GitHub Actions üzerinden yayınlanan)</h2>
       <div>
         <table>
           <thead><tr><th>Tarih</th><th>Sembol</th><th>Zaman Dilimi</th><th>Aralık</th><th>Getiri</th><th>İşlem</th><th></th></tr></thead>
@@ -205,24 +210,73 @@ async function loadBacktest() {
         </table>
       </div>
     </div>`;
-    view.querySelectorAll(".detail-btn").forEach(btn => {
+    wrap.querySelectorAll(".detail-btn").forEach(btn => {
       btn.addEventListener("click", () => loadBacktestDetail(btn.dataset.id));
     });
   } catch (e) {
-    view.innerHTML = `<div class="panel"><div class="empty">
-      Henüz backtest çalıştırılmadı. GitHub'da "Actions" sekmesinden "Backtest calistir" workflow'unu
-      tetikleyerek yeni bir backtest başlatabilirsiniz.
-    </div></div>`;
+    wrap.innerHTML = "";
   }
+}
+
+function dateInputToMs(value, endOfDay) {
+  const [y, m, d] = value.split("-").map(Number);
+  return endOfDay ? Date.UTC(y, m - 1, d, 23, 59, 59, 999) : Date.UTC(y, m - 1, d, 0, 0, 0, 0);
+}
+
+function setupBacktestForm() {
+  const form = document.getElementById("bt-form");
+  const endInput = form.querySelector("[name=end]");
+  const startInput = form.querySelector("[name=start]");
+  const today = new Date();
+  endInput.value = today.toISOString().slice(0, 10);
+  const ninetyDaysAgo = new Date(today.getTime() - 90 * 86_400_000);
+  startInput.value = ninetyDaysAgo.toISOString().slice(0, 10);
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const symbol = fd.get("symbol");
+    const timeframe = fd.get("timeframe");
+    const startMs = dateInputToMs(fd.get("start"), false);
+    const endVal = fd.get("end");
+    const endMs = endVal ? dateInputToMs(endVal, true) : Date.now();
+    const balance = Number(fd.get("balance"));
+    const margin = Number(fd.get("margin"));
+    const leverage = Number(fd.get("leverage"));
+
+    const result = document.getElementById("bt-result");
+    const btn = form.querySelector(".run-btn");
+    if (startMs >= endMs) {
+      result.innerHTML = `<div class="error-box">Başlangıç tarihi bitiş tarihinden önce olmalı.</div>`;
+      return;
+    }
+    btn.disabled = true;
+    btn.textContent = "Çalışıyor…";
+    result.innerHTML = `<div class="panel"><div class="empty">OKX'ten veri çekiliyor ve backtest hesaplanıyor…</div></div>`;
+    try {
+      const detail = await runClientBacktest({
+        symbol, entryTimeframe: timeframe, startMs, endMs,
+        startingBalance: balance, marginPerTrade: margin, leverage,
+      });
+      result.innerHTML = renderDetailHtml(detail);
+    } catch (err) {
+      result.innerHTML = `<div class="error-box">Backtest başarısız: ${err.message}</div>`;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "▶ Çalıştır";
+    }
+  });
 }
 
 function setActiveTab(tab) {
   activeTab = tab;
-  document.querySelectorAll(".tab-btn").forEach(btn => {
+  document.querySelectorAll(".tab-btn[data-tab]").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.tab === tab);
   });
+  document.getElementById("account-view").style.display = tab === "backtest" ? "none" : "";
+  document.getElementById("backtest-view").style.display = tab === "backtest" ? "" : "none";
   if (tab === "backtest") {
-    loadBacktest();
+    loadBacktestHistory();
   } else {
     loadProfile(tab);
   }
@@ -230,8 +284,9 @@ function setActiveTab(tab) {
 
 document.getElementById("tabs").addEventListener("click", (e) => {
   const btn = e.target.closest(".tab-btn");
-  if (btn) setActiveTab(btn.dataset.tab);
+  if (btn && btn.dataset.tab) setActiveTab(btn.dataset.tab);
 });
 
+setupBacktestForm();
 setActiveTab("15m");
-setInterval(() => setActiveTab(activeTab), 60_000);
+setInterval(() => { if (activeTab !== "backtest") setActiveTab(activeTab); }, 60_000);

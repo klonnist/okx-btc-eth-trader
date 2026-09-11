@@ -35,7 +35,34 @@
     </div>
   </div>
 
-  <div id="backtest-view" style="display:none;"></div>
+  <div id="backtest-view" style="display:none;">
+    <div class="panel" style="margin-bottom:14px;">
+      <h2>Yeni Backtest — kendi tarih aralığınızı seçin (tarayıcınızda anında çalışır)</h2>
+      <form id="bt-form" class="bt-form">
+        <label>Sembol
+          <select name="symbol">
+            <option value="BTC-USDT-SWAP">BTC-USDT-SWAP</option>
+            <option value="ETH-USDT-SWAP">ETH-USDT-SWAP</option>
+          </select>
+        </label>
+        <label>Zaman Dilimi
+          <select name="timeframe">
+            <option value="15m">15 Dakika</option>
+            <option value="4H" selected>4 Saat</option>
+            <option value="1D">1 Gün</option>
+          </select>
+        </label>
+        <label>Başlangıç <input type="date" name="start" required></label>
+        <label>Bitiş <input type="date" name="end"></label>
+        <label>Bakiye (USDT) <input type="number" name="balance" value="10000" min="100" step="100"></label>
+        <label>Marjin / İşlem (USDT) <input type="number" name="margin" value="500" min="10" step="10"></label>
+        <label>Kaldıraç <input type="number" name="leverage" value="5" min="1" max="50" step="1"></label>
+        <button type="submit" class="tab-btn run-btn">▶ Çalıştır</button>
+      </form>
+    </div>
+    <div id="bt-result"></div>
+    <div id="bt-history"></div>
+  </div>
 
   <p class="disclaimer">
     ⚠️ Bu bot gerçek para kullanmaz, hiçbir gerçek emir göndermez. Tamamen sanal bir hesap üzerinde
@@ -43,6 +70,7 @@
     kurallarına dayalı otomatik bir simülasyondur, kesin sonuç garantisi vermez.
   </p>
 </div>
+<script src="backtest-engine.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

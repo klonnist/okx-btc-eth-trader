@@ -86,6 +86,48 @@ tbody tr:not(:last-child) td { border-bottom: 1px solid var(--card-border); }
   line-height: 1.5;
 }
 
+.bt-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  padding: 14px;
+  align-items: end;
+}
+.bt-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.bt-form input, .bt-form select {
+  background: #0e1219;
+  border: 1px solid var(--card-border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  color-scheme: dark;
+}
+.bt-form .run-btn {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #061021;
+  font-weight: 600;
+  cursor: pointer;
+  height: 38px;
+}
+.bt-form .run-btn:disabled { opacity: .6; cursor: default; }
+
+.error-box {
+  margin: 0 14px 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--red);
+  border-radius: 8px;
+  color: var(--red);
+  font-size: 13px;
+}
+
 .badge {
   display: inline-block;
   font-size: 11px;
