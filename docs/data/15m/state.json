@@ -15,9 +15,9 @@
       "margin": 500.0,
       "leverage": 10.0,
       "opened_at": "2026-09-12T07:23:33.980227+00:00",
-      "last_price": 77349.5,
-      "unrealized_pnl": 3.68,
-      "unrealized_r": 0.52
+      "last_price": 77340.0,
+      "unrealized_pnl": 3.07,
+      "unrealized_r": 0.43
     }
   },
   "closed_trades": [
@@ -39,7 +39,7 @@
     "losses": 0,
     "win_rate_pct": 100.0,
     "total_pnl": 15.19,
-    "unrealized_pnl": 3.68
+    "unrealized_pnl": 3.07
   },
-  "last_updated": "2026-09-12T09:24:49.154336+00:00"
+  "last_updated": "2026-09-12T09:38:21.173711+00:00"
 }
