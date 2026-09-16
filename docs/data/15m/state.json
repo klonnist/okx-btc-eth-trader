@@ -3,8 +3,23 @@
   "leverage": 10.0,
   "margin_per_trade": 500.0,
   "starting_balance": 10000.0,
-  "balance": 10084.272603856445,
-  "open_positions": {},
+  "balance": 10081.772603856445,
+  "open_positions": {
+    "BTC-USDT-SWAP": {
+      "symbol": "BTC-USDT-SWAP",
+      "side": "BUY",
+      "entry_price": 75963.3,
+      "sl": 75709.00300699449,
+      "tp": 76387.12832167586,
+      "qty": 0.06582125842347554,
+      "margin": 500.0,
+      "leverage": 10.0,
+      "opened_at": "2026-09-16T10:09:27.998895+00:00",
+      "last_price": 75963.3,
+      "unrealized_pnl": 0.0,
+      "unrealized_r": 0.0
+    }
+  },
   "closed_trades": [
     {
       "symbol": "ETH-USDT-SWAP",
@@ -100,8 +115,8 @@
     "wins": 4,
     "losses": 4,
     "win_rate_pct": 50.0,
-    "total_pnl": 84.27,
-    "unrealized_pnl": 0
+    "total_pnl": 81.77,
+    "unrealized_pnl": 0.0
   },
-  "last_updated": "2026-09-16T09:54:02.132963+00:00"
+  "last_updated": "2026-09-16T10:09:28.480810+00:00"
 }
