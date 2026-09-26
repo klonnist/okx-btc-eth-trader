@@ -15,9 +15,9 @@
       "margin": 500.0,
       "leverage": 10.0,
       "opened_at": "2026-09-26T01:52:01.796215+00:00",
-      "last_price": 2689.37,
-      "unrealized_pnl": -4.51,
-      "unrealized_r": -0.29
+      "last_price": 2685.78,
+      "unrealized_pnl": -11.18,
+      "unrealized_r": -0.72
     },
     "BTC-USDT-SWAP": {
       "symbol": "BTC-USDT-SWAP",
@@ -29,9 +29,9 @@
       "margin": 500.0,
       "leverage": 10.0,
       "opened_at": "2026-09-26T04:09:09.478912+00:00",
-      "last_price": 83968.9,
-      "unrealized_pnl": 0.0,
-      "unrealized_r": 0.0
+      "last_price": 83886.1,
+      "unrealized_pnl": -4.93,
+      "unrealized_r": -0.52
     }
   },
   "closed_trades": [
@@ -317,7 +317,7 @@
     "losses": 14,
     "win_rate_pct": 44.0,
     "total_pnl": 104.85,
-    "unrealized_pnl": -4.51
+    "unrealized_pnl": -16.11
   },
-  "last_updated": "2026-09-26T04:09:09.802225+00:00"
+  "last_updated": "2026-09-26T04:25:55.210812+00:00"
 }
