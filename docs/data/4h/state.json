@@ -15,9 +15,9 @@
       "margin": 500.0,
       "leverage": 5.0,
       "opened_at": "2026-10-20T17:54:06.676995+00:00",
-      "last_price": 84596.1,
-      "unrealized_pnl": 53.55,
-      "unrealized_r": 1.42
+      "last_price": 84667.9,
+      "unrealized_pnl": 55.71,
+      "unrealized_r": 1.48
     },
     "ETH-USDT-SWAP": {
       "symbol": "ETH-USDT-SWAP",
@@ -29,9 +29,9 @@
       "margin": 500.0,
       "leverage": 5.0,
       "opened_at": "2026-10-21T03:19:46.626556+00:00",
-      "last_price": 2511.33,
-      "unrealized_pnl": 67.81,
-      "unrealized_r": 1.17
+      "last_price": 2491.99,
+      "unrealized_pnl": 48.04,
+      "unrealized_r": 0.83
     }
   },
   "closed_trades": [
@@ -141,7 +141,7 @@
     "losses": 6,
     "win_rate_pct": 33.33,
     "total_pnl": -72.68,
-    "unrealized_pnl": 121.36
+    "unrealized_pnl": 103.75
   },
-  "last_updated": "2026-10-21T18:48:52.494420+00:00"
+  "last_updated": "2026-10-21T22:05:18.522755+00:00"
 }
