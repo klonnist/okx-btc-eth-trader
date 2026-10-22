@@ -3,37 +3,8 @@
   "leverage": 5.0,
   "margin_per_trade": 500.0,
   "starting_balance": 10000.0,
-  "balance": 9927.318612571185,
-  "open_positions": {
-    "BTC-USDT-SWAP": {
-      "symbol": "BTC-USDT-SWAP",
-      "side": "BUY",
-      "entry_price": 82822.2,
-      "sl": 81571.84368125894,
-      "tp": 84906.12719790178,
-      "qty": 0.03018514359676512,
-      "margin": 500.0,
-      "leverage": 5.0,
-      "opened_at": "2026-10-20T17:54:06.676995+00:00",
-      "last_price": 82020.7,
-      "unrealized_pnl": -24.19,
-      "unrealized_r": -0.64
-    },
-    "ETH-USDT-SWAP": {
-      "symbol": "ETH-USDT-SWAP",
-      "side": "BUY",
-      "entry_price": 2445.01,
-      "sl": 2388.2573995303464,
-      "tp": 2539.5976674494227,
-      "qty": 1.0224907055594863,
-      "margin": 500.0,
-      "leverage": 5.0,
-      "opened_at": "2026-10-21T03:19:46.626556+00:00",
-      "last_price": 2409.49,
-      "unrealized_pnl": -36.32,
-      "unrealized_r": -0.63
-    }
-  },
+  "balance": 9829.095306642075,
+  "open_positions": {},
   "closed_trades": [
     {
       "symbol": "ETH-USDT-SWAP",
@@ -133,15 +104,37 @@
       "exit_reason": "SL",
       "pnl": -37.2568,
       "balance_after": 9929.82
+    },
+    {
+      "symbol": "BTC-USDT-SWAP",
+      "side": "BUY",
+      "entry_time": "2026-10-20T17:54:06.676995+00:00",
+      "entry_price": 82822.2,
+      "exit_time": "2026-10-22T15:28:28.115786+00:00",
+      "exit_price": 81571.84368125894,
+      "exit_reason": "SL",
+      "pnl": -38.9733,
+      "balance_after": 9888.35
+    },
+    {
+      "symbol": "ETH-USDT-SWAP",
+      "side": "BUY",
+      "entry_time": "2026-10-21T03:19:46.626556+00:00",
+      "entry_price": 2445.01,
+      "exit_time": "2026-10-22T15:28:28.438987+00:00",
+      "exit_price": 2388.2573995303464,
+      "exit_reason": "SL",
+      "pnl": -59.25,
+      "balance_after": 9829.1
     }
   ],
   "stats": {
-    "total_trades": 9,
+    "total_trades": 11,
     "wins": 3,
-    "losses": 6,
-    "win_rate_pct": 33.33,
-    "total_pnl": -72.68,
-    "unrealized_pnl": -60.51
+    "losses": 8,
+    "win_rate_pct": 27.27,
+    "total_pnl": -170.9,
+    "unrealized_pnl": 0
   },
-  "last_updated": "2026-10-22T10:25:20.066821+00:00"
+  "last_updated": "2026-10-22T15:28:28.439038+00:00"
 }
